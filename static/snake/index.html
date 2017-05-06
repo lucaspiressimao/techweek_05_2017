@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			#campoJogo{
+			    width: 750px;
+			    height: 750px;
+			    
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			    margin: auto;
+			    outline: 1px solid;
+			}
+
+			#header{
+				width: 500px;
+				top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			    margin: auto;
+			    margin-bottom: 70px;
+				margin-top: 20px;
+			}
+
+			#nomeDoJogo{
+				float: left;
+				font-size: 200%;
+			}
+
+			#pontuacao{
+				margin-left: 100px;
+			}
+			
+			.campo{
+			    width: 50px;
+			    height: 50px;
+			    
+			    float: left;
+			}
+		</style>
+	</head>	
+	<body>
+		<div id='header'>
+			<div id='nomeDoJogo'>SNAKE</div>
+			<div id='pontuacao'>0</div>
+		</div>
+		<div id='campoJogo'></div>
+	</body>
+</html>
+<script type="text/javascript" >
+		
+	(function() {
+		var linhas = 15;
+		var colunas = 15;
+		var direcao = 'd'; //c = cima / b = baixo / d = direita / e = esquerda
+		var snake = [];
+		var speed = 400;
+		var lin = 0
+		var col = 0
+		var fim = false;
+		var comida = false;
+		var comida_ele;
+		var pontos = 0;
+		var direcaoTemp = 'd';
+
+
+		function criarCampo(){
+			for (i = 0; i < linhas; i++) { 
+				var divLinha = document.createElement('div');
+				divLinha.setAttribute('id', 'linha' + i);
+				document.getElementById("campoJogo").appendChild(divLinha);
+				for (j = 0; j < colunas; j++) { 
+					var div = document.createElement('div');
+					div.className = 'campo';
+					div.setAttribute('data-linha', i);
+					div.setAttribute('data-coluna', j);
+					document.getElementById("linha"+i).appendChild(div);
+				}
+			}
+		}
+
+		function pintarSnake(){
+			for (var i = 0; i < snake.length; i++) {
+				snake[i].style.backgroundColor = 'gray';
+			}
+			snake[0].style.backgroundColor = 'red';
+			snake[snake.length-1].style.backgroundColor = 'blue';
+		}
+
+		function criarSnake(){
+			snake[0] = document.querySelector('[data-linha="5"][data-coluna="5"]');
+			snake[1] = document.querySelector('[data-linha="5"][data-coluna="4"]');
+			snake[2] = document.querySelector('[data-linha="5"][data-coluna="3"]');
+			pegarProximoCampo();
+		}
+
+		function pegarProximoCampo(){
+			direcao = direcaoTemp;
+			
+			lin = parseInt(snake[0].getAttribute("data-linha"));
+			col = parseInt(snake[0].getAttribute("data-coluna"));
+
+			if (direcao == 'd'){
+				col += 1;
+			} else if (direcao == 'e'){
+				col -= 1;
+			} else if (direcao == 'c'){
+				lin -= 1
+			} else if (direcao == 'b'){
+				lin += 1
+			}
+			
+			if( lin % linhas == 0){lin = 0}
+			if( lin == -1){lin = linhas - 1}
+			if( col % colunas == 0){col = 0}
+			if( col == -1){col = colunas - 1}
+		}
+
+		function moverSnake(){
+			snake.unshift(document.querySelector('[data-linha="' + lin + '"][data-coluna="' + col + '"]'));
+			
+			if(snake[0] == comida_ele){
+				pontos += 10;
+				comida = false;	
+				document.getElementById("pontuacao").innerText = pontos
+				if(speed > 150){
+					speed -= 50;
+				}
+			} else {
+				snake[snake.length-1].removeAttribute("style");
+				snake.pop();
+			}
+			gerarComida();
+			pintarSnake();
+		}
+
+		function verificaColisao(){
+			var snk = snake.slice();
+			snk.shift();
+			var prox_elem = document.querySelector('[data-linha="' + lin + '"][data-coluna="' + col + '"]')
+			fim = snk.includes(prox_elem);
+		}
+
+		function gerarComida(){
+			if(!comida){
+				var com_lin = Math.floor((Math.random() * linhas-1));
+				var com_col = Math.floor((Math.random() * linhas-1));
+
+				if(com_lin < 0){com_lin = 0};
+				if(com_col < 0){com_col = 0};
+				
+				while(snake.includes(document.querySelector('[data-linha="' + com_lin + '"][data-coluna="' + com_col + '"]'))){
+					com_lin = Math.floor((Math.random() * linhas-1));
+					com_col = Math.floor((Math.random() * linhas-1));
+				}
+				
+				if(com_lin < 0){com_lin = 0};
+				if(com_col < 0){com_col = 0};
+				
+				comida_ele = document.querySelector('[data-linha="' + com_lin + '"][data-coluna="' + com_col + '"]');
+				comida_ele.style.backgroundColor = 'green';
+				
+				comida = true;
+			}
+		}
+
+		function executarJogo(){
+			var jogoLoop = setTimeout(function () {
+			
+				pegarProximoCampo();
+				moverSnake();
+				verificaColisao();
+				
+				
+				if(!fim){
+					executarJogo();
+				} else {
+					setTimeout(function() {
+						alert("Voce perdeu !! Sua pontuacao foi de: " + pontos);
+					}, 10);
+				}
+
+			}, speed)
+		}
+
+		document.onkeyup = function (e) {
+			var key = (window.event || e).keyCode;
+			
+			if ((key == 37 || key == 65) && direcao != 'd')
+				direcaoTemp = 'e';
+			else if ((key == 38 || key == 87) && direcao != 'b')
+				direcaoTemp = 'c';
+			else if ((key == 39 || key == 68) && direcao != 'e')
+				direcaoTemp = 'd';
+			else if ((key == 40 || key == 83) && direcao != 'c')
+				direcaoTemp = 'b';
+			
+		};
+		
+		criarCampo();
+		criarSnake();
+		pintarSnake();
+		gerarComida();
+		executarJogo();
+	})();
+			
+</script>
