@@ -1027,10 +1027,9 @@
 				} else {
 					var divFinal = document.getElementById("final");
 					divFinal.style.display = 'block';
-					var pontosForm = document.getElementById("pontosForm");
-					pontosForm.innerText = pontos;
-					document.getElementById("pts").value = pontos;
-
+					var pts = document.getElementById("pts");
+					pts.value = pontos;
+					
 					// setTimeout(function() {
 					// 	if(!alert("Voce perdeu! Sua pontuacao foi de: " + pontos)) 
 					// 		document.location.reload();
@@ -1058,7 +1057,6 @@
 		};
 		
 		criarCampo();
-		// configurar();
 		executarJogo();
 	})();
 			

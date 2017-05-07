@@ -212,12 +212,8 @@
 				} else {
 					var divFinal = document.getElementById("final");
 					divFinal.style.display = 'block';
-					var pontosForm = document.getElementById("pontosForm");
-					pontosForm.innerText = pontos;
-					document.getElementById("pts").value = pontos;
-					// setTimeout(function() {
-					// 	alert("Voce perdeu !! Sua pontuacao foi de: " + pontos);
-					// }, 10);
+					var pts = document.getElementById("pts");
+					pts.value = pontos;
 				}
 
 			}, speed)
