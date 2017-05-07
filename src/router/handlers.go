@@ -12,7 +12,7 @@ func (r Router) sevePontosTetris(w http.ResponseWriter, req *http.Request) {
 	pontos := req.FormValue("pontos")
 
 	rank := models.Ranking{Nome: nome, Email: email, Pontos: pontos, DB: r.DB}
-	_, err := rank.Save()
+	_, err := rank.Save(0)
 
 	if err != nil {
 		fmt.Println("Erro ao salvar os dados")
@@ -21,8 +21,23 @@ func (r Router) sevePontosTetris(w http.ResponseWriter, req *http.Request) {
 	http.Redirect(w, req, "/tetris", http.StatusFound)
 }
 
+func (r Router) sevePontosSnake(w http.ResponseWriter, req *http.Request) {
+	nome := req.FormValue("nome")
+	email := req.FormValue("email")
+	pontos := req.FormValue("pontos")
 
-func principal(w http.ResponseWriter, req *http.Request){
+	rank := models.Ranking{Nome: nome, Email: email, Pontos: pontos, DB: r.DB}
+	_, err := rank.Save(1)
+
+	if err != nil {
+		fmt.Println("Erro ao salvar os dados")
+	}
+		
+	http.Redirect(w, req, "/snake", http.StatusFound)
+}
+
+
+func (r Router) principal(w http.ResponseWriter, req *http.Request){
 	w.WriteHeader(http.StatusOK) // evita listagem das pastas
 	// lista de status https://golang.org/pkg/net/http/
 }
@@ -32,5 +47,5 @@ func servTetris(w http.ResponseWriter, req *http.Request) {
 }
 
 func servSnake(w http.ResponseWriter, req *http.Request) {
-	http.ServeFile(w, req, "static/tetris/tetris.html")
+	http.ServeFile(w, req, "static/snake/snake.html")
 }

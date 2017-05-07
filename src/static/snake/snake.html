@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<style>
 			#campoJogo{
 			    width: 750px;
@@ -40,9 +41,40 @@
 			    
 			    float: left;
 			}
+			#final {
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
+				background-color: rgb(255,255,255,0.85);
+				display: none;
+			}
+			#formulario {
+				margin: 0 auto;
+				margin-top: 10%;
+				width: 25%;
+			}
 		</style>
 	</head>	
 	<body>
+		<div id='final'>
+			<div id="formulario">
+				<h3>Você perdeu. 
+				<form id='posicao' action="/snakeSave" method="post">
+				  Nome:<br>
+				  <input type="text" name="nome" value="">
+				  <br>
+				  Email:<br>
+				  <input type="email" name="email" value="">
+				  <br>
+				  Pontos:<br>
+				  <input id="pts"  name="pontos" value="0">
+				  <br><br>
+				  <input type="submit" value="Enviar">
+				</form> 
+			</div>
+		</div>
 		<div id='header'>
 			<div id='nomeDoJogo'>SNAKE</div>
 			<div id='pontuacao'>0</div>
@@ -178,9 +210,14 @@
 				if(!fim){
 					executarJogo();
 				} else {
-					setTimeout(function() {
-						alert("Voce perdeu !! Sua pontuacao foi de: " + pontos);
-					}, 10);
+					var divFinal = document.getElementById("final");
+					divFinal.style.display = 'block';
+					var pontosForm = document.getElementById("pontosForm");
+					pontosForm.innerText = pontos;
+					document.getElementById("pts").value = pontos;
+					// setTimeout(function() {
+					// 	alert("Voce perdeu !! Sua pontuacao foi de: " + pontos);
+					// }, 10);
 				}
 
 			}, speed)

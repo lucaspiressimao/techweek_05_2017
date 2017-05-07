@@ -19,13 +19,13 @@ func (r Router) CreateRoutes() *mux.Router {
 	fmt.Printf("Criando rotas \n")
 	m := map[string]map[string]Handlers{
 		"GET": {
-			"/":			principal, // mesmo não servindo arquivos
+			"/":			r.principal, // mesmo não servindo arquivos
 			"/tetris":		servTetris,
 			"/snake":		servSnake,
 		},
 		"POST": {
 			"/tetrisSave": 		r.sevePontosTetris,
-			// "/snake":		sevePontosSnake,
+			"/snakeSave":		r.sevePontosSnake,
 		},
 	}
 

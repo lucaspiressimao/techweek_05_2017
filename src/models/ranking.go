@@ -15,9 +15,9 @@ type Ranking struct {
 	Pontos   string  `json:"pontos"`
 }
 
-func (r Ranking) Save() (Ranking , error) {
+func (r Ranking) Save(i int) (Ranking , error) {
 
-	err := r.DB.QueryRow("INSERT INTO Ranking (nome, email, pontos, origem) VALUES($1, $2, $3, $4) RETURNING id", r.Nome, r.Email, r.Pontos, 0).Scan(&r.Id)
+	err := r.DB.QueryRow("INSERT INTO Ranking (nome, email, pontos, origem) VALUES($1, $2, $3, $4) RETURNING id", r.Nome, r.Email, r.Pontos, i).Scan(&r.Id)
 	if err != nil {
 		return r, err
 	}
