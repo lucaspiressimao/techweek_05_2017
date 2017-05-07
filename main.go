@@ -1,14 +1,22 @@
 package main
 
 import (
-  "log"
   "net/http"
+  "github.com/gorilla/mux"
+  "fmt"
 )
 
-func main() {
-  fs := http.FileServer(http.Dir("static"))
-  http.Handle("/", fs)
+func servTetris(w http.ResponseWriter, req *http.Request) {
+	http.ServeFile(w, req, "static/tetris/tetris.html")
+}
 
-  log.Println("Listening...")
-  http.ListenAndServe(":3000", nil)
+func main() {
+	router := mux.NewRouter().StrictSlash(true)
+	
+	fmt.Println("Criando Rotas")
+	router.HandleFunc("/tetris", servTetris) // GET por default
+	//router.HandleFunc("/tetris", servTetris).Methods("GET") mas pode especificar o metodo
+
+	fmt.Println("Iniciando Servidor")
+	http.ListenAndServe(":3000", router)
 }
