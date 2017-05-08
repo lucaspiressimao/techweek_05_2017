@@ -5,6 +5,7 @@ import(
 	"models"
 	"fmt"
 	"text/template"
+	"mail"
 )
 
 func (r Router) sevePontosTetris(w http.ResponseWriter, req *http.Request) {
@@ -19,6 +20,18 @@ func (r Router) sevePontosTetris(w http.ResponseWriter, req *http.Request) {
 		fmt.Println("Erro ao salvar os dados")
 	}
 		
+	emailEnv := mail.Email{
+		From: "Lucas Pires", 
+		To: "lucaspiressimao@gmail.com",
+		ToName: "Lucas Pires", 
+		Subject: "Obrigado por jogar",
+		Body: ("Obrigado por jogar Tetris. Sua pontuação foi de " + pontos),
+		Email: "lucaspiressimao@gmail.com",
+		Senha: "rqsvwmvnixowkbxu",
+		Smtp: "smtp.gmail.com"}
+
+	go emailEnv.Enviar()
+
 	http.Redirect(w, req, "/tetris", http.StatusFound)
 }
 
@@ -34,6 +47,18 @@ func (r Router) sevePontosSnake(w http.ResponseWriter, req *http.Request) {
 		fmt.Println("Erro ao salvar os dados")
 	}
 		
+	emailEnv := mail.Email{
+		From: "Lucas Pires", 
+		To: "lucaspiressimao@gmail.com",
+		ToName: "Lucas Pires", 
+		Subject: "Obrigado por jogar",
+		Body: ("Obrigado por jogar Snake. Sua pontuação foi de " + pontos),
+		Email: "lucaspiressimao@gmail.com",
+		Senha: "rqsvwmvnixowkbxu",
+		Smtp: "smtp.gmail.com"}
+
+	go emailEnv.Enviar()
+
 	http.Redirect(w, req, "/snake", http.StatusFound)
 }
 
