@@ -4,6 +4,7 @@ import(
 	"net/http"
 	"models"
 	"fmt"
+	"text/template"
 )
 
 func (r Router) sevePontosTetris(w http.ResponseWriter, req *http.Request) {
@@ -42,10 +43,40 @@ func (r Router) principal(w http.ResponseWriter, req *http.Request){
 	// lista de status https://golang.org/pkg/net/http/
 }
 
-func servTetris(w http.ResponseWriter, req *http.Request) {
-	http.ServeFile(w, req, "static/tetris/tetris.html")
+func (r Router) servTetris(w http.ResponseWriter, req *http.Request) {
+	ranking := models.Ranking{DB: r.DB}
+	result, err := ranking.TopTenTetris()
+
+	w.Header().Set("Content-Type", "text/html")
+	
+	tpl, err := template.ParseFiles("static/tetris/tetris.gohtml")
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	err = tpl.Execute(w, result)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
-func servSnake(w http.ResponseWriter, req *http.Request) {
-	http.ServeFile(w, req, "static/snake/snake.html")
+func (r Router) servSnake(w http.ResponseWriter, req *http.Request) {
+	ranking := models.Ranking{DB: r.DB}
+	result, err := ranking.TopTenSnake()
+
+	w.Header().Set("Content-Type", "text/html")
+	
+	tpl, err := template.ParseFiles("static/snake/snake.gohtml")
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	err = tpl.Execute(w, result)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }

@@ -97,16 +97,13 @@
 				<th>E-mail</th>
 				<th>Pontuação</th>
 				</tr>
+				{{range .}}
 				<tr>
-				<td>Jill</td>
-				<td>lucaspiressimao@gmail.com</td>
-				<td>50</td>
+				<td>{{.Nome}}</td>
+				<td>{{.Email}}</td>
+				<td>{{.Pontos}}</td>
 				</tr>
-				<tr>
-				<td>Eve</td>
-				<td>Jackson</td>
-				<td>94</td>
-				</tr>
+				{{end}}
 			</table> 
 		</div>
 		<div id='campoJogo'></div>

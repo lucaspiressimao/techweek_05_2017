@@ -20,8 +20,8 @@ func (r Router) CreateRoutes() *mux.Router {
 	m := map[string]map[string]Handlers{
 		"GET": {
 			"/":			r.principal, // mesmo não servindo arquivos
-			"/tetris":		servTetris,
-			"/snake":		servSnake,
+			"/tetris":		r.servTetris,
+			"/snake":		r.servSnake,
 		},
 		"POST": {
 			"/tetrisSave": 		r.sevePontosTetris,
