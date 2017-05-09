@@ -22,9 +22,9 @@ func (r Router) sevePontosTetris(w http.ResponseWriter, req *http.Request) {
 		
 	emailEnv := mail.Email{
 		From: "Lucas Pires", 
-		To: "lucaspiressimao@gmail.com",
-		ToName: "Lucas Pires", 
-		Subject: "Obrigado por jogar",
+		To: email,
+		ToName: nome, 
+		Subject: nome + " obrigado por jogar",
 		Body: ("Obrigado por jogar Tetris. Sua pontuação foi de " + pontos),
 		Email: "lucaspiressimao@gmail.com",
 		Senha: "rqsvwmvnixowkbxu",
@@ -49,9 +49,9 @@ func (r Router) sevePontosSnake(w http.ResponseWriter, req *http.Request) {
 		
 	emailEnv := mail.Email{
 		From: "Lucas Pires", 
-		To: "lucaspiressimao@gmail.com",
-		ToName: "Lucas Pires", 
-		Subject: "Obrigado por jogar",
+		To: email,
+		ToName: nome, 
+		Subject: nome + " obrigado por jogar",
 		Body: ("Obrigado por jogar Snake. Sua pontuação foi de " + pontos),
 		Email: "lucaspiressimao@gmail.com",
 		Senha: "rqsvwmvnixowkbxu",
